@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "version": "0.6.6"
+  },
+  "savePath": "C:\\Development\\GameDev\\LearningPhaser\\DungeonCrawler\\public\\character",
+  "images": [],
+  "folders": [
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/faint",
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/push",
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/run-down",
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/run-side",
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/run-up",
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/walk-down",
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/walk-side",
+    "C:/Development/GameDev/Assets/Graphics/RPG/legend of faune files/legend of faune files/Sprites/Player/sprites/walk-up"
+  ],
+  "packOptions": {
+    "textureName": "faune",
+    "textureFormat": "png",
+    "removeFileExtension": true,
+    "prependFolderName": false,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "disableSmoothing": false,
+    "filter": "none",
+    "exporter": "Phaser 3",
+    "fileName": "pack-result",
+    "savePath": "C:\\Development\\GameDev\\LearningPhaser\\DungeonCrawler\\public\\character",
+    "width": 2048,
+    "height": 2048,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 0,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsPacker",
+    "packerMethod": "Smart"
+  }
+}

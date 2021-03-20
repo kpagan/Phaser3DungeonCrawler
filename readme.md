@@ -131,6 +131,10 @@ Change 8000 to whatever you want.
 
 [parcel-plugin-static-files](https://github.com/elwin013/parcel-plugin-static-files-copy#readme) is used to copy static files from `public` into the output directory and serve it. You can add additional paths by modifying `staticFiles` in `package.json`.
 
-## License
+## Tools used
 
-[MIT License](https://github.com/ourcade/phaser3-typescript-parcel-template/blob/master/LICENSE)
+Tiled (https://www.mapeditor.org/)
+
+Free Texture Packer (https://free-tex-packer.com)
+
+Tile Extruder (https://github.com/sporadic-labs/tile-extruder)
