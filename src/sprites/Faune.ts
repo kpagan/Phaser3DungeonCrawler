@@ -10,13 +10,20 @@ declare global {
 
 enum HealthState {
     IDLE,
-    DAMAGE
+    DAMAGE,
+    DEAD
 }
 
 export default class Faune extends Phaser.Physics.Arcade.Sprite {
 
     private healthState: HealthState = HealthState.IDLE;
     private damageTime: number = 0;
+
+    private _health: number = 3;
+
+    get health() {
+        return this._health;
+    }
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
         super(scene, x, y, texture, frame);
@@ -25,7 +32,8 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
     }
 
     update (cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
-        if (this.healthState === HealthState.DAMAGE) {
+        if (this.healthState === HealthState.DAMAGE 
+            || this.healthState == HealthState.DEAD) {
             return
         }
 
@@ -60,14 +68,26 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
     }
 
     handleDamage(dir: Phaser.Math.Vector2) {
+        if (this._health <=0) {
+            return;
+        }
+
         if (this.healthState === HealthState.DAMAGE) {
             return
         }
 
-        this.setVelocity(dir.x, dir.y);
-        this.setTint(0xff0000);
-        this.healthState = HealthState.DAMAGE;
-        this.damageTime = 0;
+
+        --this._health;
+
+        if (this._health <=0) {
+            this.healthState = HealthState.DEAD;
+            this.anims.play('faune-faint');
+        } else {
+            this.setVelocity(dir.x, dir.y);
+            this.setTint(0xff0000);
+            this.healthState = HealthState.DAMAGE;
+            this.damageTime = 0;  
+        }
     }
 
     preUpdate(t: number, dt: number) {
@@ -122,6 +142,12 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
             key: 'faune-run-side',
             frames: anims.generateFrameNames('faune', { start: 1, end: 8, prefix: 'run-side-' }),
             repeat: -1,
+            frameRate: 15
+        });
+
+        anims.create({
+            key: 'faune-faint',
+            frames: anims.generateFrameNames('faune', { start: 1, end: 4, prefix: 'faint-' }),
             frameRate: 15
         });
     }

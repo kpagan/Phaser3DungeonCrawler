@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 import { debugDraw } from '../utils/debug'
 import Lizard from '../sprites/Lizard'
 import Faune from '../sprites/Faune'
+import { sceneEvents } from '../events/EventCenter'
+import { EventsConstants } from '../events/EventsConstants'
 
 export default class Game extends Phaser.Scene {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -62,12 +64,14 @@ export default class Game extends Phaser.Scene {
         let dy = this.faune.y - lizard.y;
 
         let dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(200);
-        
+
         this.faune.handleDamage(dir);
+
+        sceneEvents.emit(EventsConstants.PLAYER_HEALTH_CHANGE, this.faune.health);
     }
 
     update(t: number, dt: number) {
-        
+
         if (this.faune) {
             this.faune.update(this.cursors);
         }
