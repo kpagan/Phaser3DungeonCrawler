@@ -8,6 +8,9 @@ import { EventsConstants } from '../events/EventsConstants'
 export default class Game extends Phaser.Scene {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private faune!: Faune;
+    private knives!: Phaser.Physics.Arcade.Group;
+    private playerLizardsCollider?: Phaser.Physics.Arcade.Collider;
+    private lizards!: Phaser.Physics.Arcade.Group
 
     constructor() {
         super('game');
@@ -35,13 +38,17 @@ export default class Game extends Phaser.Scene {
 
         wallsLayer.setCollisionByProperty({ collides: true });
 
+        this.knives = this.physics.add.group({
+            classType: Phaser.Physics.Arcade.Image
+        });
         // debugDraw(wallsLayer, this);
 
-        this.faune = this.add.faune(400, 250, 'faune')
+        this.faune = this.add.faune(400, 250, 'faune');
+        this.faune.setKnives(this.knives);
 
         this.cameras.main.startFollow(this.faune, true);
 
-        let lizards = this.physics.add.group({
+        this.lizards = this.physics.add.group({
             classType: Lizard,
             createCallback: (item: Phaser.GameObjects.GameObject) => {
                 let lizItem = item as Lizard;
@@ -49,12 +56,23 @@ export default class Game extends Phaser.Scene {
             }
         })
 
-        lizards.get(350, 100, 'lizard');
+        this.lizards.get(350, 100, 'lizard');
 
         this.physics.add.collider(this.faune, wallsLayer);
-        this.physics.add.collider(lizards, wallsLayer);
-        this.physics.add.collider(lizards, this.faune, this.handlePlayerLizardCollision, undefined, this);
+        this.physics.add.collider(this.lizards, wallsLayer);
+        this.physics.add.collider(this.knives, wallsLayer, this.handleKnifeWallCollision, undefined, this);
+        this.physics.add.collider(this.knives, this.lizards, this.handleKnifeLizardCollision, undefined, this);
+        this.playerLizardsCollider = this.physics.add.collider(this.lizards, this.faune, this.handlePlayerLizardCollision, undefined, this);
 
+    }
+
+    private handleKnifeWallCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
+        this.knives.killAndHide(obj1);
+    }
+
+    private handleKnifeLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
+        this.knives.killAndHide(obj1);
+        this.lizards.killAndHide(obj2);
     }
 
     private handlePlayerLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
@@ -68,6 +86,10 @@ export default class Game extends Phaser.Scene {
         this.faune.handleDamage(dir);
 
         sceneEvents.emit(EventsConstants.PLAYER_HEALTH_CHANGE, this.faune.health);
+
+        if (this.faune.health <= 0) {
+            this.playerLizardsCollider?.destroy();
+        }
     }
 
     update(t: number, dt: number) {
