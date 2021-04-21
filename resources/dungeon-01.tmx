@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="57" height="33" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="57" height="33" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
  <editorsettings>
   <export target="../public/tiles/dungeon-01.json" format="json"/>
  </editorsettings>
@@ -760,4 +760,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="3" name="Chests">
+  <object id="1" gid="596" x="79" y="109" width="16" height="16"/>
+  <object id="2" gid="596" x="778" y="229" width="16" height="16"/>
+  <object id="3" gid="596" x="192" y="416" width="16" height="16"/>
+ </objectgroup>
 </map>

@@ -4,6 +4,7 @@ import Lizard from '../sprites/Lizard'
 import Faune from '../sprites/Faune'
 import { sceneEvents } from '../events/EventCenter'
 import { EventsConstants } from '../events/EventsConstants'
+import Treasure from '../sprites/Treasure'
 
 export default class Game extends Phaser.Scene {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -24,11 +25,12 @@ export default class Game extends Phaser.Scene {
         this.scene.run('game-ui');
         Lizard.createLizardAnims(this.anims);
         Faune.createCharacterAnims(this.anims);
+        Treasure.createChestAnims(this.anims);
 
         let map = this.make.tilemap({ key: 'dungeon' });
         let tileset = map.addTilesetImage('dungeon', 'tiles', 16, 16, 1, 2);
 
-        // the name of the layerID must match the layer that was createdin Tiled.
+        // the name of the layerID must match the layer that was created in Tiled.
         // In the dungeon-01.json file this name is the /layers[]/name field
         // createStaticLayer was replaced by createLayer in Phaser 3.50
         map.createLayer('ground', tileset);
@@ -37,6 +39,14 @@ export default class Game extends Phaser.Scene {
         wallsLayer.setDepth(10);
 
         wallsLayer.setCollisionByProperty({ collides: true });
+
+        let chests = this.physics.add.staticGroup({
+            classType: Treasure
+        });
+        let chestsLayer = map.getObjectLayer('Chests');
+        chestsLayer.objects.forEach(chestObj => {
+            chests.get(chestObj.x! + chestObj.width! * 0.5, chestObj.y! - chestObj.height! * 0.5, 'treasure');
+        });
 
         this.knives = this.physics.add.group({
             classType: Phaser.Physics.Arcade.Image
@@ -60,10 +70,16 @@ export default class Game extends Phaser.Scene {
 
         this.physics.add.collider(this.faune, wallsLayer);
         this.physics.add.collider(this.lizards, wallsLayer);
+        this.physics.add.collider(this.faune, chests, this.handlePlayerChestCollision, undefined, this);
         this.physics.add.collider(this.knives, wallsLayer, this.handleKnifeWallCollision, undefined, this);
         this.physics.add.collider(this.knives, this.lizards, this.handleKnifeLizardCollision, undefined, this);
         this.playerLizardsCollider = this.physics.add.collider(this.lizards, this.faune, this.handlePlayerLizardCollision, undefined, this);
 
+    }
+
+    private handlePlayerChestCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
+        let chest = obj2 as Treasure;
+        this.faune.setChest(chest);
     }
 
     private handleKnifeWallCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {

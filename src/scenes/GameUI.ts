@@ -11,6 +11,13 @@ export default class GameUI extends Phaser.Scene {
     }
 
     create() {
+        let coinsLabel = this.add.text(5, 18, '0');
+
+        
+        sceneEvents.on(EventsConstants.PLAYER_COINS_CHANGE, coins => {
+            coinsLabel.text = coins.toString();
+        });
+
         this.hearts = this.add.group({
             classType: Phaser.GameObjects.Image
         });
@@ -27,7 +34,8 @@ export default class GameUI extends Phaser.Scene {
 
         sceneEvents.on(EventsConstants.PLAYER_HEALTH_CHANGE, this.handlePlayerHealthChanged, this);
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
-            sceneEvents.off(EventsConstants.PLAYER_HEALTH_CHANGE, this.handlePlayerHealthChanged, this)
+            sceneEvents.off(EventsConstants.PLAYER_HEALTH_CHANGE, this.handlePlayerHealthChanged, this);
+            sceneEvents.off(EventsConstants.PLAYER_COINS_CHANGE);
         });
     }
 
