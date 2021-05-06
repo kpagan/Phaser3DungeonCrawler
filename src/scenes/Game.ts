@@ -49,7 +49,8 @@ export default class Game extends Phaser.Scene {
         });
 
         this.knives = this.physics.add.group({
-            classType: Phaser.Physics.Arcade.Image
+            classType: Phaser.Physics.Arcade.Image,
+            maxSize: 3
         });
         // debugDraw(wallsLayer, this);
 
@@ -66,7 +67,11 @@ export default class Game extends Phaser.Scene {
             }
         })
 
-        this.lizards.get(350, 100, 'lizard');
+        let lizardsLayer = map.getObjectLayer('Lizards');
+        lizardsLayer.objects.forEach(lizObj => {
+            this.lizards.get(lizObj.x! + lizObj.width! * 0.5, lizObj.y! - lizObj.height! * 0.5, 'lizard');
+            
+        })
 
         this.physics.add.collider(this.faune, wallsLayer);
         this.physics.add.collider(this.lizards, wallsLayer);

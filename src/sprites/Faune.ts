@@ -132,6 +132,11 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
             return
         }
 
+        let knife = this.knives.get(this.x, this.y, 'knife') as Phaser.Physics.Arcade.Image
+        if (!knife) {
+            return;
+        }
+        
         let parts = this.anims.currentAnim.key.split('-');
         let direction = parts[2];
 
@@ -154,7 +159,6 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
         }
 
         let angle = vec.angle();
-        let knife = this.knives.get(this.x, this.y, 'knife') as Phaser.Physics.Arcade.Image
         knife.setActive(true);
         knife.setVisible(true);
         knife.setRotation(angle);

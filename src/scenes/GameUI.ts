@@ -11,7 +11,10 @@ export default class GameUI extends Phaser.Scene {
     }
 
     create() {
-        let coinsLabel = this.add.text(5, 18, '0');
+        this.add.image(6, 26, 'treasure', 'coin_anim_f0');
+        let coinsLabel = this.add.text(12, 20, '0', {
+            fontSize: '14'
+        });
 
         
         sceneEvents.on(EventsConstants.PLAYER_COINS_CHANGE, coins => {
